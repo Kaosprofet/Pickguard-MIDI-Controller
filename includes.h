@@ -4,7 +4,10 @@
 #include <avr/io.h>
 #include "macros.h"
 #include "midi.h"
+#include "uart.h"
 
+#define F_CPU 16000000
+#define BAUD 9600
 #define DEBOUNCE 50
 #define modeButtonPin 11 // Fix pin for actual board
 
