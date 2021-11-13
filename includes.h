@@ -1,20 +1,30 @@
 #ifnded INCLUDES_H
 #define INCLUDES_H
 
-#include "makros.h"
+#include <avr/io.h>
+#include "macros.h"
 #include "midi.h"
 
 #define DEBOUNCE 50
+#define modeButtonPin 11 // Fix pin for actual board
 
+uint8_t mode = 0;
+uint8_t octave = 2;
+uint8_t velocity = 100;
+
+uint8_t notePedalState;
+uint8_t controlPedalState;
+uint8_t lastNoteSent;
+
+// Defining and initialising key pedals
 typedef struct key_t {
     uint8_t pin;
     uint8_t midiNote;
     uint8_t debounce;
     uint8_t noteSent;
-} key_t
+} key_t;
 
-
-// needs to be fixed for the board
+// pins needs to be fixed for the board
 key_t keys[] = {                                
   { 22, 11, 0, 0 },     // B
   { 24, 12, 0, 0 },     // C
@@ -31,5 +41,22 @@ key_t keys[] = {
   { 46, 23, 0, 0 },     // B
   {  0,  0, 0, 0 }      // end of list marker
 };
+
+// Defining and initialising control button 
+typedef struct controlButton_t {
+  uint8_t pin;
+  uint8_t value;
+  uint8_t debounce;
+} controlButton_t;
+
+controlButton_t controlButtons[] = {
+  { 1,  1, 0 },   // Octave up
+  { 2, -1, 0 },   // Octave down
+  { 3,  1, 0 },   // Velocity up
+  { 4, -1, 0 },   // Velocity down
+  { 0,  0, 0 }    // end of list marker
+};
+
+
 
 #endif
