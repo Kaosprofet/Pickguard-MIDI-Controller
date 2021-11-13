@@ -5,20 +5,10 @@
 #include "macros.h"
 #include "midi.h"
 #include "uart.h"
+#include "play.h"
 
 #define F_CPU 16000000
 #define BAUD 9600
-#define DEBOUNCE 50
-#define modeButtonPin 11 // Fix pin for actual board
-
-uint8_t mode = 0;
-uint8_t octave = 2;
-uint8_t velocity = 100;
-
-uint8_t notePedalState;
-uint8_t controlButtonState;
-uint8_t modeButtonState;
-uint8_t lastNoteSent;
 
 // Defining and initialising key pedals
 typedef struct key_t {
@@ -62,7 +52,5 @@ controlButton_t controlButtons[] = {
   { 4, 0, -1, 0 },   // Velocity down
   { 0, 0,  0, 0 }    // end of list marker
 };
-
-
 
 #endif
