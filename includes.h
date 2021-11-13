@@ -16,48 +16,51 @@ uint8_t octave = 2;
 uint8_t velocity = 100;
 
 uint8_t notePedalState;
-uint8_t controlPedalState;
+uint8_t controlButtonState;
+uint8_t modeButtonState;
 uint8_t lastNoteSent;
 
 // Defining and initialising key pedals
 typedef struct key_t {
     uint8_t pin;
+    uint8_t reg;
     uint8_t midiNote;
     uint8_t debounce;
     uint8_t noteSent;
 } key_t;
 
-// pins needs to be fixed for the board
+// pins needs to be fixed for the board, ad 
 key_t keys[] = {                                
-  { 22, 11, 0, 0 },     // B
-  { 24, 12, 0, 0 },     // C
-  { 26, 13, 0, 0 },     // C#
-  { 28, 14, 0, 0 },     // D
-  { 30, 15, 0, 0 },     // D#
-  { 32, 16, 0, 0 },     // E
-  { 34, 17, 0, 0 },     // F
-  { 36, 18, 0, 0 },     // F#
-  { 38, 19, 0, 0 },     // G
-  { 40, 20, 0, 0 },     // G#
-  { 42, 21, 0, 0 },     // A
-  { 44, 22, 0, 0 },     // A#
-  { 46, 23, 0, 0 },     // B
-  {  0,  0, 0, 0 }      // end of list marker
+  { 22, 0, 11, 0, 0 },     // B
+  { 24, 0, 12, 0, 0 },     // C
+  { 26, 0, 13, 0, 0 },     // C#
+  { 28, 0, 14, 0, 0 },     // D
+  { 30, 0, 15, 0, 0 },     // D#
+  { 32, 0, 16, 0, 0 },     // E
+  { 34, 0, 17, 0, 0 },     // F
+  { 36, 0, 18, 0, 0 },     // F#
+  { 38, 0, 19, 0, 0 },     // G
+  { 40, 0, 20, 0, 0 },     // G#
+  { 42, 0, 21, 0, 0 },     // A
+  { 44, 0, 22, 0, 0 },     // A#
+  { 46, 0, 23, 0, 0 },     // B
+  {  0, 0,  0, 0, 0 }      // end of list marker
 };
 
 // Defining and initialising control button 
 typedef struct controlButton_t {
   uint8_t pin;
+  uint8_t reg;
   uint8_t value;
   uint8_t debounce;
 } controlButton_t;
 
 controlButton_t controlButtons[] = {
-  { 1,  1, 0 },   // Octave up
-  { 2, -1, 0 },   // Octave down
-  { 3,  1, 0 },   // Velocity up
-  { 4, -1, 0 },   // Velocity down
-  { 0,  0, 0 }    // end of list marker
+  { 1, 0,  1, 0 },   // Octave up
+  { 2, 0, -1, 0 },   // Octave down
+  { 3, 0,  1, 0 },   // Velocity up
+  { 4, 0, -1, 0 },   // Velocity down
+  { 0, 0,  0, 0 }    // end of list marker
 };
 
 
