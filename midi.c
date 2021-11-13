@@ -1,7 +1,4 @@
-#include <avr/io.h>
-
-#include "midi.h"
-#include "uart.h"
+#include "includes.h"
 
 void noteOn(uint8_t note) {
     midiSend(0x90, note, noteVelocity);
