@@ -24,10 +24,10 @@ void main(void) {
 void init(void) {
     // Setting pullup for buttons
     for(int i = 0; keys[i].pin != 0; ++i) {
-        setBit(keys[i].reg, keys[i].pin);
+        setBit(keys[i].portReg, keys[i].pin);
     }
     for(uint8_t i = 0; controlButtons[i].pin != 0; ++i) {
-        setBit(controlButtons[i].reg, controlButtons[i].pin);
+        setBit(controlButtons[i].portReg, controlButtons[i].pin);
     }
 
     initUart();

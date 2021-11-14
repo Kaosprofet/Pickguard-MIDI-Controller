@@ -12,7 +12,7 @@ uint8_t lastNoteSent;
 
 void control(void) {
     for(uint8_t i = 0; controlButtons[i].pin != 0; ++i) {
-        controlButtonState = bitIsSet(controlButtons[i].reg, controlButtons[i].pin); 
+        controlButtonState = bitIsSet(controlButtons[i].pinReg, controlButtons[i].pin); 
 
         if(controlButtons[i].debounce == 0) {
             if(controlButtonState == 0) {
@@ -43,7 +43,7 @@ void control(void) {
 
 void normalMode(void) {
     for(int i = 0; keys[i].pin != 0; ++i) {
-        noteButtonState = bitIsSet(keys[i].reg,keys[i].pin);
+        noteButtonState = bitIsSet(keys[i].pinReg,keys[i].pin);
         
         if(keys[i].debounce == 0) {
             if(noteButtonState == 0) {
@@ -68,7 +68,7 @@ void normalMode(void) {
 void holdMode(void) {
     while(modeButtonState == LOW) {
         for(int i = 0; keys[i].pin != 0; ++i) {
-            noteButtonState = bitIsSet(keys[i].regkeys[i].pin);
+            noteButtonState = bitIsSet(keys[i].pinReg,keys[i].pin);
             if(keys[i].debounce == 0) {
                 if(noteButtonState == LOW) {
                     if(keys[i].midiNote == lastNoteSent) {
@@ -86,7 +86,7 @@ void holdMode(void) {
                 --keys[i].debounce;
             }
         }
-        modeButtonState = bitIsSet(, modeButtonPin); //add correct reg
+        control();
     }
     noteOff(lastNoteSent);
 }
