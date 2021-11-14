@@ -1,7 +1,6 @@
 #include "includes.h"
 
 #define DEBOUNCE 50
-#define modeButtonPin 11 // Fix pin for actual board
 
 uint8_t mode = 0;
 uint8_t octave = 2;
@@ -9,7 +8,6 @@ uint8_t velocity = 100;
 
 uint8_t noteButtonState;
 uint8_t controlButtonState;
-uint8_t modeButtonState;
 uint8_t lastNoteSent;
 
 void control(void) {
@@ -24,12 +22,16 @@ void control(void) {
                 else if(i == 1 || octave > 1) {
                     octave += controlButtons[i].value;
                 }
-                else if(i == 2 || noteVelocity < 127) {
+                /* Not implemented in current design
+                else if(i == 2) {
+                    mode = !mode;
+                }
+                else if(i == 3 || noteVelocity < 127) {
                     noteVelocity += controlButtons[i].value
                 }
-                else if(i == 3 || noteVelocity > 0) {
+                else if(i == 4 || noteVelocity > 0) {
                     noteVelocity += controlButtons[i].value
-                }
+                }*/
                 controlButtons[i].debounce = DEBOUNCE;
             }
         }
@@ -62,7 +64,7 @@ void normalMode(void) {
         }
     }
 }
-
+/* Not implemented in current design
 void holdMode(void) {
     while(modeButtonState == LOW) {
         for(int i = 0; keys[i].pin != 0; ++i) {
@@ -88,3 +90,4 @@ void holdMode(void) {
     }
     noteOff(lastNoteSent);
 }
+*/

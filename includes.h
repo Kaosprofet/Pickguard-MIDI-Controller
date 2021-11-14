@@ -10,6 +10,9 @@
 #define F_CPU 16000000
 #define BAUD 9600
 
+uint8_t mode = 0;
+uint8_t octave = 2;
+
 // Defining and initialising key pedals
 typedef struct key_t {
     uint8_t pin;
@@ -46,11 +49,13 @@ typedef struct controlButton_t {
 } controlButton_t;
 
 controlButton_t controlButtons[] = {
-  { 1, 0,  1, 0 },   // Octave up
-  { 2, 0, -1, 0 },   // Octave down
-  { 3, 0,  1, 0 },   // Velocity up
-  { 4, 0, -1, 0 },   // Velocity down
-  { 0, 0,  0, 0 }    // end of list marker
+  { 1, 0,  1, 0 },  // Octave up
+  { 2, 0, -1, 0 },  // Octave down
+  // Not implemented in current design
+  //{ 3, 0,  0, 0 },  // Mode switch
+  //{ 3, 0,  0, 0 },  // Mode switch
+  //{ 3, 0,  0, 0 },  // Mode switch
+  { 0, 0,  0, 0 }   // end of list marker
 };
 
 #endif

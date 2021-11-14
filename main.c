@@ -29,7 +29,6 @@ void init(void) {
     for(uint8_t i = 0; controlButtons[i].pin != 0; ++i) {
         setBit(controlButtons[i].reg, controlButtons[i].pin);
     }
-    setBit(modereg,modeButtonPin); //add correct reg
 
     initUart();
 }
