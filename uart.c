@@ -6,7 +6,7 @@ void initUart(void) {
     UBRR0H = (unsigned char)(BAUD_PRESCALE >> 8);
 	UBRR0L = (unsigned char)BAUD_PRESCALE;
 
-    UCSR0B |= (1 << TXEN0) | (1 << RXEN0);  // UART enabled
+    UCSR0B |= (1 << TXEN0);  // UART enabled only TX | (1 << RXEN0)
     UCSR0C = (1 << URSEL0) | (1 << USBS0) | (3 << UCSZ00);    // 2 stop bits, 8 bit data recieve
 
     fdevopen(transmitByte,receiveByte); //enables printf function over uart, remove after testing
