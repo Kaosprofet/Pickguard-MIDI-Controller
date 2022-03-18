@@ -6,7 +6,7 @@ Pickguard MIDI-controller by Kaosprofet
 
 void init(void);
 
-void main(void) {
+int main(void) {
     init();
     while(1) {
         switch(mode) {

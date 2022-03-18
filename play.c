@@ -2,10 +2,6 @@
 
 #define DEBOUNCE 50
 
-uint8_t mode = 0;
-uint8_t octave = 2;
-uint8_t velocity = 100;
-
 uint8_t noteButtonState;
 uint8_t controlButtonState;
 uint8_t lastNoteSent;

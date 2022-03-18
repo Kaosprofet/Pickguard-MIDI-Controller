@@ -1,4 +1,4 @@
-#ifnded MIDI_H
+#ifndef MIDI_H
 #define MIDI_H
 
 #include <avr/io.h>

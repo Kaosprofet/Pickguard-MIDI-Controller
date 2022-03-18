@@ -1,4 +1,4 @@
-#ifnded INCLUDES_H
+#ifndef INCLUDES_H
 #define INCLUDES_H
 
 #include <avr/io.h>
@@ -12,6 +12,7 @@
 
 uint8_t mode = 0;
 uint8_t octave = 2;
+uint8_t noteVelocity = 100;
 
 // Defining and initialising key pedals
 typedef struct key_t {
