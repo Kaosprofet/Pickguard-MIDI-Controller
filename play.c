@@ -1,14 +1,36 @@
-#include "includes.h"
+#include "play.h"
+#include <avr/io.h>
+#include "interface.h"
+#include "macros.h"
+#include "midi.h"
 
 #define DEBOUNCE 50
+
+uint8_t mode = 0;
+uint8_t octave = 2;
+uint8_t noteVelocity = 100;
 
 uint8_t noteButtonState;
 uint8_t controlButtonState;
 uint8_t lastNoteSent;
 
-void control(void) {
+void play (key_t * keys, controlButton_t * controlButtons) {
+	while(1) {
+		switch(mode) {
+			case(0):
+			normalMode(keys);
+			break;
+			case(1):
+			//holdMode(keys);
+			break;
+		}
+		control(controlButtons);
+	}
+} 
+
+void control(controlButton_t * controlButtons) {
     for(uint8_t i = 0; controlButtons[i].pin != 0; ++i) {
-        controlButtonState = bitIsSet(controlButtons[i].pinReg, controlButtons[i].pin); 
+        controlButtonState = bitIsSet(*controlButtons[i].pinReg, controlButtons[i].pin); 
 
         if(controlButtons[i].debounce == 0) {
             if(controlButtonState == 0) {
@@ -23,10 +45,10 @@ void control(void) {
                     mode = !mode;
                 }
                 else if(i == 3 || noteVelocity < 127) {
-                    noteVelocity += controlButtons[i].value
+                    noteVelocity += controlButtons[i]->value
                 }
                 else if(i == 4 || noteVelocity > 0) {
-                    noteVelocity += controlButtons[i].value
+                    noteVelocity += controlButtons[i]->value
                 }*/
                 controlButtons[i].debounce = DEBOUNCE;
             }
@@ -37,13 +59,13 @@ void control(void) {
     }
 }
 
-void normalMode(void) {
+void normalMode(key_t * keys) {
     for(int i = 0; keys[i].pin != 0; ++i) {
-        noteButtonState = bitIsSet(keys[i].pinReg,keys[i].pin);
+        noteButtonState = bitIsSet(*keys[i].pinReg,keys[i].pin);
         
         if(keys[i].debounce == 0) {
             if(noteButtonState == 0) {
-                noteOn(keys[i].midiNote + 12*octave);
+                noteOn(keys[i].midiNote + 12*octave, noteVelocity);
                 keys[i].noteSent = keys[i].midiNote + 12*octave;
                 keys[i].debounce = DEBOUNCE;
             }
@@ -61,25 +83,25 @@ void normalMode(void) {
     }
 }
 /* Not implemented in current design
-void holdMode(void) {
+void holdMode(key_t * keys) {
     while(modeButtonState == LOW) {
-        for(int i = 0; keys[i].pin != 0; ++i) {
-            noteButtonState = bitIsSet(keys[i].pinReg,keys[i].pin);
-            if(keys[i].debounce == 0) {
+        for(int i = 0; keys[i]->pin != 0; ++i) {
+            noteButtonState = bitIsSet(keys[i]->pinReg,keys[i]->pin);
+            if(keys[i]->debounce == 0) {
                 if(noteButtonState == LOW) {
-                    if(keys[i].midiNote == lastNoteSent) {
+                    if(keys[i]->midiNote == lastNoteSent) {
                         noteOff(lastNoteSent);
                     }
                     else {
                         noteOff(lastNoteSent);
-                        noteOn(keys[i].midiNote + 12*octave;);
-                        lastNoteSent = keys[i].midiNote + 12*octave;;
-                        keys[i].debounce = DEBOUNCE;
+                        noteOn(keys[i]->midiNote + 12*octave;);
+                        lastNoteSent = keys[i]->midiNote + 12*octave;;
+                        keys[i]->debounce = DEBOUNCE;
                     }
                 }
             }
             else {
-                --keys[i].debounce;
+                --keys[i]->debounce;
             }
         }
         control();
