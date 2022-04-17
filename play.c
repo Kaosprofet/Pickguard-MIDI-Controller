@@ -6,6 +6,7 @@
 
 #define DEBOUNCE 50
 
+// Starting the controller in normal mode
 uint8_t mode = 0;
 uint8_t octave = 2;
 uint8_t noteVelocity = 100;
@@ -14,11 +15,11 @@ uint8_t noteButtonState;
 uint8_t controlButtonState;
 uint8_t lastNoteSent;
 
-void play (key_t * keys, controlButton_t * controlButtons) {
+void play (key_t *keys, controlButton_t *controlButtons) {
 	while(1) {
 		switch(mode) {
 			case(0):
-			normalMode(keys);
+			normalMode(keys);	
 			break;
 			case(1):
 			//holdMode(keys);
@@ -29,7 +30,7 @@ void play (key_t * keys, controlButton_t * controlButtons) {
 } 
 
 void control(controlButton_t * controlButtons) {
-    for(uint8_t i = 0; controlButtons[i].pin != 0; ++i) {
+    for(uint8_t i = 0; i < numctrl; ++i) {
         controlButtonState = bitIsSet(*controlButtons[i].pinReg, controlButtons[i].pin); 
 
         if(controlButtons[i].debounce == 0) {
@@ -60,20 +61,22 @@ void control(controlButton_t * controlButtons) {
 }
 
 void normalMode(key_t * keys) {
-    for(int i = 0; keys[i].pin != 0; ++i) {
-        noteButtonState = bitIsSet(*keys[i].pinReg,keys[i].pin);
+    for(int i = 0; i < numKeys; ++i) {
+        noteButtonState = bitIsSet(*(keys[i].pinReg),keys[i].pin);
         
         if(keys[i].debounce == 0) {
             if(noteButtonState == 0) {
                 noteOn(keys[i].midiNote + 12*octave, noteVelocity);
                 keys[i].noteSent = keys[i].midiNote + 12*octave;
                 keys[i].debounce = DEBOUNCE;
+				setBit(PORTD,PIND0);
             }
         }
         else {
             if(noteButtonState == 1) {
                 if(--keys[i].debounce == 0) {
                     noteOff(keys[i].noteSent);
+					clearBit(PORTD,PIND0);
                 }  
             }
             else {
@@ -82,10 +85,11 @@ void normalMode(key_t * keys) {
         }
     }
 }
+
 /* Not implemented in current design
 void holdMode(key_t * keys) {
     while(modeButtonState == LOW) {
-        for(int i = 0; keys[i]->pin != 0; ++i) {
+        for(int i = 0; i < numKeys; ++i) {
             noteButtonState = bitIsSet(keys[i]->pinReg,keys[i]->pin);
             if(keys[i]->debounce == 0) {
                 if(noteButtonState == LOW) {
