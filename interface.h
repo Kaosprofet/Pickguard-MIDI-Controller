@@ -1,3 +1,11 @@
+/* Pickguard MIDI-controller
+
+Variables and typedefs for ardware interaction
+
+Published under the GNU General Public License v3.0
+
+Created by Kaosprofet
+*/
 #ifndef INTERFACE_H
 #define INTERFACE_H
 

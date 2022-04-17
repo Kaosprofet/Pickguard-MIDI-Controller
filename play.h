@@ -1,3 +1,11 @@
+/* Pickguard MIDI-controller
+
+Main program, might be moved to main.c if size allows
+
+Published under the GNU General Public License v3.0
+
+Created by Kaosprofet
+*/
 #ifndef PLAY_H
 #define PLAY_H
 

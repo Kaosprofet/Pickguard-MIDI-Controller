@@ -1,5 +1,8 @@
-/*
-Pickguard MIDI-controller by Kaosprofet 
+/* Pickguard MIDI-controller
+
+Published under the GNU General Public License v3.0
+
+Created by Kaosprofet
 */
 
 #include <avr/io.h>

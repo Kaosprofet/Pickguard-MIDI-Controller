@@ -1,3 +1,11 @@
+/* Pickguard MIDI-controller
+
+Macros to simplify code
+
+Published under the GNU General Public License v3.0
+
+Created by Kaosprofet
+*/
 #ifndef MACROS_H
 #define MACROS_H
 
