@@ -11,7 +11,7 @@ void initUart(void) {
 	UBRR0L = (unsigned char)BAUD_PRESCALE;
 
     UCSR0B |= (1 << TXEN0);  // UART enabled with only TX
-    UCSR0C = (1 << USBS0) | (3 << UCSZ00);    // 2 stop bits, 8 bit data recieve // (1 << URSEL0) kanskje un�dvendig?
+    UCSR0C = (1 << USBS0) | (3 << UCSZ00);    // 2 stop bits, 8 bit data recieve
 }
 
 void transmitByte(unsigned char byte) {

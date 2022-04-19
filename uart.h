@@ -4,8 +4,9 @@ Simple UART with only TX for sending MIDI-notes
 
 Published under the GNU General Public License v3.0
 
-Created by Kaosprofet
+Created by Kaosprofet in 2022
 */
+
 #ifndef UART_H
 #define UART_H
 

@@ -2,7 +2,7 @@
 #include "uart.h"
 
 void noteOn(uint8_t note, uint8_t noteVelocity) {
-    midiSend(0x90, note, noteVelocity);
+    midiSend(0x90, note, noteVelocity); // Change 0x90 to add chanell
 }
 
 void noteOff(uint8_t note) {
