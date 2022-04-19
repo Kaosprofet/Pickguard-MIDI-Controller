@@ -11,12 +11,9 @@ Created by Kaosprofet
 #include "macros.h"
 #include "uart.h"
 
-
 #define LEDPIN PIND0
 
-
 // Initialise all keys with ports, pinnumbering and MIDI-note
-
 
 key_t keys[] = {
 	{ PIND7, &PORTD, &PIND, 11, 0, 0 },     // B
@@ -43,7 +40,6 @@ controlButton_t controlButtons[] = {
 	//{ 5, 0,  0, 0 }  // Velocity down
 };
 
-
 void init(void);
 
 int main(void) {
@@ -64,4 +60,5 @@ void init(void) {
     }
 
     initUart();
+	midiSend(0xB0, 5, 0);
 }

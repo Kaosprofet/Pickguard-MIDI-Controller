@@ -1,14 +1,13 @@
 #include "play.h"
 #include <avr/io.h>
 #include "interface.h"
-#include "macros.h"
 #include "midi.h"
 
 #define DEBOUNCE 50
 
 // Starting the controller in normal mode
 uint8_t mode = 0;
-uint8_t octave = 2;
+uint8_t octave = 3;
 uint8_t noteVelocity = 100;
 
 uint8_t noteButtonState;
@@ -31,16 +30,18 @@ void play (key_t *keys, controlButton_t *controlButtons) {
 
 void control(controlButton_t * controlButtons) {
     for(uint8_t i = 0; i < numctrl; ++i) {
-        controlButtonState = bitIsSet(*controlButtons[i].pinReg, controlButtons[i].pin); 
+        controlButtonState = bitIsSet(*(controlButtons[i].pinReg), controlButtons[i].pin); 
 
-        if(controlButtons[i].debounce == 0) {
-            if(controlButtonState == 0) {
+        if(!controlButtons[i].debounce) {
+            if(!controlButtonState) {
                 if(i == 0 || octave < 10) {
                     octave += controlButtons[i].value;
                 }
                 else if(i == 1 || octave > 1) {
                     octave += controlButtons[i].value;
                 }
+				controlButtons[i].debounce = DEBOUNCE;
+                
                 /* Not implemented in current design
                 else if(i == 2) {
                     mode = !mode;
@@ -51,11 +52,15 @@ void control(controlButton_t * controlButtons) {
                 else if(i == 4 || noteVelocity > 0) {
                     noteVelocity += controlButtons[i]->value
                 }*/
-                controlButtons[i].debounce = DEBOUNCE;
             }
         }
         else {
-            --controlButtons[i].debounce;
+			if (controlButtonState) {
+				--controlButtons[i].debounce;
+			} 
+			else {
+				controlButtons[i].debounce = DEBOUNCE;
+			}
         }
     }
 }
@@ -63,26 +68,31 @@ void control(controlButton_t * controlButtons) {
 void normalMode(key_t * keys) {
     for(int i = 0; i < numKeys; ++i) {
         noteButtonState = bitIsSet(*(keys[i].pinReg),keys[i].pin);
-        
-        if(keys[i].debounce == 0) {
-            if(noteButtonState == 0) {
-                noteOn(keys[i].midiNote + 12*octave, noteVelocity);
-                keys[i].noteSent = keys[i].midiNote + 12*octave;
-                keys[i].debounce = DEBOUNCE;
+		// Key debounce has reached 0
+		if (!keys[i].debounce) {
+			// New key input detected
+			if (!noteButtonState) {
+				noteOn(keys[i].midiNote + 12*octave, noteVelocity);
+				keys[i].noteSent = keys[i].midiNote + 12*octave;
+				keys[i].debounce = DEBOUNCE;
 				setBit(PORTD,PIND0);
-            }
-        }
-        else {
-            if(noteButtonState == 1) {
-                if(--keys[i].debounce == 0) {
-                    noteOff(keys[i].noteSent);
+			}
+		}
+		// Key debounce still counting down or no new input detected
+		else {
+			// Key has been released
+			if (noteButtonState) {
+				// Decrementing debounce gets it to zero
+				if (--keys[i].debounce == 0) {
+					noteOff(keys[i].noteSent);
 					clearBit(PORTD,PIND0);
-                }  
-            }
-            else {
-                keys[i].debounce = DEBOUNCE;
-            }                                                 
-        }
+				}
+			}
+			// Key is held or has been repressed
+			else {
+				keys[i].debounce = DEBOUNCE;
+			}
+		}
     }
 }
 
